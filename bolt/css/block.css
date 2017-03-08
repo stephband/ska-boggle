@@ -1,0 +1,261 @@
+
+/*
+.block
+
+<p>For layout. There are two ways a <code>.block</code> can be styled: as a
+<code>block</code>, for a vertical layout, or as <code>inline-block</code>, for
+a horizontal layout. <code>block</code> by default, obviously.</p>
+<p>Any <code>.block</code> child of a <code>.grid-block</code> becomes an
+inline-block. Grid layout can be designed by adding
+<code>.grid-<i>n</i>/<i>d</i></code> classes to those children.</p>
+<p>Applied to a media tag like img, svg, video and canvas, <code>.block</code>
+will scale the element to fill the available width.</p>
+
+Styleguide: block
+*/
+
+.block {
+	display: block;
+
+	/* Set as position parent */
+	position: relative;
+
+	/* Force img, video, svg to scale. */
+	height: auto;
+
+	/* Set them up to play nice as inline-blocks. */
+	vertical-align: top;
+	overflow: visible;
+
+	/* Negate possible spacing when .block is used on something typographic like
+	   a <p>, for example. Also, make blocks behave as centered wraps by default. */
+	margin: 0 auto;
+	padding: 0;
+}
+
+.block > img,
+.block > svg,
+.block > video,
+.block > canvas,
+.block > object,
+.block > embed,
+.block > iframe {
+	/* Don't allow media to break out of .block bounds. */
+	max-width: 100%;
+}
+
+
+/*
+.inline-block
+
+Styleguide: block.inline-block
+*/
+
+.inline-block {
+	display: inline-block;
+}
+
+/*
+.toggle-block
+
+A block animated to behave like a drawer that reveals content when the class
+<code>active</code> is added. Note in this example the class <code>toggle</code>
+is an action class that gives the block <code>active</code> when a link that
+references it is clicked.
+
+Markup: <a href="#some-stuff">Click to show</a>
+<div class="toggle-block block toggle" id="some-stuff">
+  <p>Crunchum ipsum dolor sit coder void, constructor function, sed do while loop
+  python orientation semi colon incident. Duis aute irure indent tabs or
+  spaces velit esse cilium buntum how crunchy duntum.</p>
+</div>
+
+Styleguide: block.toggle-block
+*/
+
+.toggle-block {
+	max-height: 0;
+	opacity: 0.5;
+	overflow: hidden;
+	visibility: hidden;
+	transition:
+		max-height 400ms cubic-bezier(0, 0.5, 0.33, 1),
+		padding-top 400ms cubic-bezier(0.8, 0, 0.8, 0),
+		padding-bottom 400ms cubic-bezier(0.48, 0.85, 0.8, 1),
+		margin-bottom 400ms cubic-bezier(0, 0.5, 0.33, 1),
+		opacity 400ms linear,
+		border-color 400ms linear,
+		background-color 200ms linear,
+		visibility 400ms linear;
+}
+
+.toggle-block:not(.active) {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.toggle-block.active {
+	max-height: 100rem;
+	opacity: 1;
+	visibility: visible;
+	transition:
+		max-height 400ms cubic-bezier(0.4, 0, 1, 0.32),
+		padding-top 400ms cubic-bezier(0.2, 1, 0.2, 1),
+		padding-bottom 400ms cubic-bezier(0.6, 0.9, 0.7, 1),
+		margin-bottom 400ms cubic-bezier(0.4, 0, 1, 0.32),
+		opacity 400ms linear,
+		border-color 400ms linear,
+		background-color 200ms linear,
+		visibility 400ms linear;
+}
+
+
+/*
+.swipe-block
+
+Styleguide: block.swipe-block
+*/
+
+.js .swipe-block {
+	/* A nice bit of hardware acceleration should help the transitions run
+	   smoothly. */
+	-webkit-transform: translate3d(0,0,0);
+	    -ms-transform: translate3d(0,0,0);
+	        transform: translate3d(0,0,0);
+
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	     -moz-user-select: none;
+	      -ms-user-select: none;
+	          user-select: none;
+
+	-webkit-transition-property: transform;
+	        transition-property: transform;
+	-webkit-transition-duration: 333ms;
+	        transition-duration: 333ms;
+	-webkit-transition-timing-function: cubic-bezier(0.1, 0.7, 0.7, 1);
+	        transition-timing-function: cubic-bezier(0.1, 0.7, 0.7, 1);
+}
+
+@media print {
+	.js .swipe-block {
+		position: static;
+		transition: none !important;
+	}
+}
+
+
+/*
+.slides-block
+
+A wrapper for <code>slide-block</code>s and <code>ctrl-button</code>s.
+
+Styleguide: block.slides-block-1
+*/
+
+.slides-block {
+	overflow: hidden;
+	background-color: #cecece;
+}
+
+.slides-block > .prev-thumb,
+.slides-block > .next-thumb {
+	position: absolute;
+	top: 50%;
+	margin-top: -1.375rem;
+	z-index: 3;
+}
+
+.slides-block > .prev-thumb {
+	left: 0;
+}
+
+.slides-block > .next-thumb {
+	right: 0;
+}
+
+
+/*
+.slide-block
+
+An inline-block set up for left-right transitions between it and it's siblings.
+<code>slide-block</code>s are only styled as slides where the <code>js</code>
+class is on an ancestor, as they require JS to be enhanced as swipeable.
+
+Markup: <div class="slides-block block">
+  <img class="slide-block block slide active" id="slide-1" src="//source.unsplash.com/category/nature/520x310"
+  /><img class="slide-block block slide" id="slide-2" src="//source.unsplash.com/category/nature/520x310"
+  /><img class="slide-block block slide" id="slide-3" src="//source.unsplash.com/category/nature/520x310" />
+  <a class="prev-thumb thumb" href="#slide-1">Previous</a>
+  <a class="next-thumb thumb" href="#slide-2">Next</a>
+</div>
+
+Styleguide: block.slides-block-2
+*/
+
+.slide-block {
+	display: inline-block;
+	width: 100%;
+	/* Give all sbling slide-blocks the same origin by overlapping. */
+	margin-right: -100%;
+	vertical-align: middle;
+}
+
+.js .slide-block {
+	/* By default all slides are positioned off to the left. */
+	left: -100%;
+	overflow: hidden;
+	z-index: 1;
+
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	     -moz-user-select: none;
+	      -ms-user-select: none;
+	          user-select: none;
+
+	/* A nice bit of hardware acceleration should help the transitions run
+	   smoothly. */
+	-webkit-transform: translate3d(0,0,0);
+	    -ms-transform: translate3d(0,0,0);
+	        transform: translate3d(0,0,0);
+
+	-webkit-transition-property: left, height;
+	        transition-property: left, height;
+	-webkit-transition-duration: 333ms;
+	        transition-duration: 333ms;
+	-webkit-transition-timing-function: cubic-bezier(0.1, 0.7, 0.7, 1);
+	        transition-timing-function: cubic-bezier(0.1, 0.7, 0.7, 1);
+}
+
+.js .slide-block.active {
+	/* The .active slide is positioned in the centre. */
+	left: 0;
+	height: auto;
+	overflow: visible;
+	z-index: 2;
+}
+
+.js .slide-block.active ~ .slide-block {
+	/* All slides after the .active slide are positioned off to
+	   the right. */
+	left: 100%;
+}
+
+.js .slide-block.active ~ .slide-block.active {
+	/* Except, of course, any that are still active. */
+	left: 0;
+}
+
+@media print {
+	.js .slide-block {
+		position: static;
+		left: 0;
+		width: 34%;
+		height: auto;
+		margin-right: 3%;
+	}
+
+	.js .slide-block:nth-child(3n) {
+		margin-right: 0;
+	}
+}

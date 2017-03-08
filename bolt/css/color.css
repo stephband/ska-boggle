@@ -1,0 +1,35 @@
+
+/*
+.color
+
+Styleguide: color
+*/
+
+/*
+.black-bg<br/>
+.white-bg<br/>
+.black-color<br/>
+.white-color
+
+Markup: <p class="text-5 white-color black-bg">Black</p>
+<p class="text-5 black-color white-bg">White</p>
+
+Styleguide: color.1
+*/
+
+:root { --white-color: white; }
+.white-color { color: white; }
+.white-bg    { background-color: white; }
+.white-fill  { fill: white; }
+
+:root { --black-color: black; }
+.black-color { color: black; }
+.black-bg    { background-color: black; }
+.black-fill  { fill: black; }
+
+.current-color { color: currentcolor; }
+.current-bg    { background-color: currentcolor; }
+.current-fill  { fill: currentcolor; }
+
+.transparent-color { color: transparent; }
+.transparent-bg    { background-color: transparent; }

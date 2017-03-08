@@ -1,0 +1,99 @@
+/*
+.index
+
+Applied to <code class="html-tag">ul</code>, <code class="html-tag">ol</code>
+and <code class="html-tag">dl</code> elements to zero their default typographic
+style. Child <code class="html-tag">li</code>s are blocks, but they are set up
+to play nice as inline-blocks too.
+
+Markup: <ul class="index">
+  <li>One</li>
+  <li>Two</li>
+</ul>
+
+Styleguide: index
+*/
+
+.index {
+	/* Remove default styling from list items. */
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.index > li {
+	display: block;
+
+	/* Specifically remove default margin and padding from
+	   list items in case some typography rules have added
+	   these back in after the reset. */
+	margin: 0;
+	padding: 0;
+
+	/* Make index items act as position parents. */
+	position: relative;
+
+	/* Prepare for inline-block layout. */
+	vertical-align: top;
+	overflow: visible;
+}
+
+
+/*
+.crumb-index
+
+A <code>'>'</code> character delimited list on one line for making navigation
+breadcrumbs. <code class="html-tag">li</code>s are inline-blocks, so they should
+have no spaces between them.
+
+Markup: <ul class="crumb-index index">
+   <li><a href="#path">path</a></li
+  ><li><a href="#to">to</a></li
+  ><li><a href="#document">document</a></li>
+</ul>
+
+Styleguide: index.crumb-index
+*/
+
+.crumb-index,
+.crumb-index > li {
+	display: inline-block;
+	white-space: nowrap;
+	line-height: 1.25rem;
+}
+
+.crumb-index > li + li::before {
+	content: ">";
+	display: inline-block;
+	vertical-align: baseline;
+	width: 1.5rem;
+	text-align: center;
+}
+
+.crumb-index > li > a {
+	text-decoration: none;
+}
+
+.crumb-index > li:last-child > a {
+	color: blue;
+}
+
+
+/*
+.inline-index
+
+Horizontal layout of <code>li</code>s.
+
+Markup: <ul class="inline-index index">
+   <li><a class="button" href="#">One</a></li
+  ><li><a class="button" href="#">Two</a></li
+  ><li><a class="button" href="#">Three</a></li
+  ><li><a class="button" href="#">Four</a></li>
+</ul>
+
+Styleguide: index.inline-index
+*/
+
+.inline-index > li {
+	display: inline-block;
+}

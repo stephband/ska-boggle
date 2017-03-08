@@ -1,0 +1,245 @@
+
+/*
+.thumb
+
+Base class for thumbnails.
+A <code>.thumb</code> is an icon or avatar or other image.
+A <code>.thumb</code> hides text content by pushing it outside the hidden overflow, displaying only it's <code>background-image</code>.
+The user cannot interact with a <code>background-image</code> in the way they can with an <code>&lt;img/&gt;</code>).
+This should be the main consideration when deciding to use a <code>.thumb</code> or an <code>&lt;img/&gt;</code>.
+Thumb is in essence an image replacement technique.
+
+A default thumb is a square of 64x64px. Add an image by defining a
+<code>background-image</code>. The image is centered and 'cropped' via
+<code>background-size</code> and <code>background-position</code>.
+
+Markup: <a class="thumb" href="#" style="background-image: url('//source.unsplash.com/category/nature/128x80')">Thumb text</a>
+
+Styleguide: thumb
+*/
+
+.thumb {
+	display: inline-block;
+	vertical-align: top;
+	overflow: hidden;
+
+	/* Nullify padding that may have been put there by other
+	   styling, say for example by <button class="thumb"> */
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+
+	/* Hide overflowing text. This technique is better
+	   than using -ve text-indent because IE7 moves
+	   the background image with the text-indent. */
+	padding-top: 4rem;
+	height: 0;
+	width: 4rem;
+
+	/* Keep top of text safely away from the bottom of
+	   the thumb. */
+	line-height: 2;
+
+	-webkit-background-size: cover;
+	   -moz-background-size: cover;
+	     -o-background-size: cover;
+	        background-size: cover;
+
+	/* background-position is set for the case where an image is used as the
+	   the background. 50% to keep it centred, and 40% because faces are often
+	   centred in the upper portion of the image. */
+	background-position: 50% 40%;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border-width: 0;
+
+	text-decoration: none;
+	color: inherit;
+}
+
+@media print {
+	.thumb {
+		/* Encourage webkit to print background image. */
+		-webkit-print-color-adjust: exact;
+	}
+}
+
+.thumb-1\:1,
+.thumb-4\:3,
+.thumb-16\:9 {
+	background-size: contain;
+	width: 100%;
+}
+
+.thumb-1\:1  { padding-top: 100%; }
+.thumb-4\:3  { padding-top: 75%; }
+.thumb-16\:9 { padding-top: 56.25%; }
+
+/*
+.close-thumb
+
+Markup: <a class="close-thumb thumb" href="#">Close</a>
+
+Styleguide: thumb.close-thumb
+*/
+
+.close-thumb {
+	width: 2.5rem;
+	padding-top: 2.5rem;
+	background-image: none;
+	background-color: white;
+	border-radius: 50%;
+	box-shadow: none;
+}
+
+.close-thumb::before,
+.close-thumb::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -0.625rem;
+	width: 1.25rem;
+	height: 0;
+	border-top: 1px solid currentcolor;
+	border-bottom: 1px solid currentcolor;
+	border-radius: 1px;
+}
+
+.close-thumb::before {
+	transform: rotate(45deg);
+}
+
+.close-thumb::after {
+	transform: rotate(-45deg);
+}
+
+/*
+.prev-thumb<br/>
+.next-thumb
+
+Navigation thumbs for slideshows.
+
+Markup: <a class="prev-thumb thumb">Previous</a>
+<a class="next-thumb thumb">Next</a>
+
+Styleguide: thumb.prev-thumb
+*/
+
+.prev-thumb,
+.next-thumb {
+	position: relative;
+	width: 3.75rem;
+	padding-top: 5rem;
+	background-image: none;
+}
+
+.prev-thumb::before,
+.next-thumb::before {
+	position: absolute;
+	top: 50%;
+	content: '';
+	height: 1.875rem;
+	width: 1.875rem;
+	margin-top: -0.9375rem;
+	border-top: 1px solid currentcolor;
+	border-left: 1px solid currentcolor;
+}
+
+.prev-thumb::before {
+	left: 62.5%;
+	margin-left: -0.9375rem;
+	transform: rotate(-45deg);
+}
+
+.next-thumb::before {
+	right: 62.5%;
+	margin-right: -0.9375rem;
+	transform: rotate(135deg);
+}
+
+.prev-thumb:hover::before,
+.next-thumb:hover::before {
+	border-top-width: 2px;
+	border-left-width: 2px;
+}
+
+/*
+.fb-thumb
+
+Markup: <a class="fb-thumb thumb" href="/">Facebook</a>
+
+Styleguide: thumb.social-thumb-1
+*/
+
+/*
+.tw-thumb
+
+Markup: <a class="tw-thumb thumb" href="/">Twitter</a>
+
+Styleguide: thumb.social-thumb-2
+*/
+
+/*
+.in-thumb
+
+Markup: <a class="in-thumb thumb" href="/">Instagram</a>
+
+Styleguide: thumb.social-thumb-3
+*/
+
+.fb-thumb,
+.tw-thumb,
+.in-thumb {
+	width: 1.875rem;
+	padding-top: 1.875rem;
+	background-image: url('../images/sprites.svg');
+	background-size: 7.5rem auto;
+}
+
+.fb-thumb {
+	background-color: #3b5998;
+	background-position: 0 -8.8125rem;
+}
+
+.tw-thumb {
+	background-color: #55acee;
+	background-position: 0 -5.875rem;
+}
+
+.in-thumb {
+	background-color: #3f729b;
+	background-position: 0 -11.75rem;
+}
+
+/*
+.dot-thumb
+
+Markup: <a class="dot-thumb thumb" href="/1">1</a>
+
+Styleguide: thumb.dot-thumb
+*/
+
+.dot-thumb {
+	position: relative;
+	width: 1.25rem;
+	padding-top: 1.25rem;
+}
+
+.dot-thumb::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -0.3125rem;
+	margin-left: -0.3125rem;
+	width: 0.625rem;
+	height: 0.625rem;
+	border: 1px solid currentcolor;
+	border-radius: 50%;
+}
+
+.dot-thumb.on::before {
+	background-color: currentcolor;
+}
