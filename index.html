@@ -108,7 +108,7 @@
 		</tr>
 	</table>
 
-	<audio autoplay id="audio">
+	<audio autoplay id="audio" controls>
 		<source src="audio/your-wife-and-mother.m4a" type="audio/mp4">
 	</audio>
 
@@ -171,6 +171,10 @@
 
 		var audio = dom.find('audio');
 
+		function end() {
+			dom.classes(dom.body).add('timeout');
+		}
+
 		dom
 		.on('timeupdate', audio)
 		.map(Fn.get('type'))
@@ -179,10 +183,9 @@
 		dom
 		.on('ended', audio)
 		.map(Fn.get('type'))
-		.each(function() {
-			dom.classes(dom.body).add('timeout');
-		});
+		.each(end);
 
+		setTimeout(end, 180000);
 	</script>
 </body>
 </html>
