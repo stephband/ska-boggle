@@ -94,6 +94,27 @@
 			display: block;
 		}
 
+		.underlined-letter::after {
+			content: '';
+			position: absolute;
+			bottom: 0.1875em;
+			left: 50%;
+			margin-left: -0.333333em;
+			width: 0.666667em;
+			border-top: 0.0375em solid currentcolor;
+		}
+
+		.q-letter {
+			letter-spacing: -0.025em;
+		}
+
+		.q-letter::after {
+			content: 'u';
+			display: inline;
+			text-transform: none;
+			font-size: 0.875em;
+		}
+
 		.orientation-0 { box-shadow: inset -0.375vmin -0.75vmin  5vmin #727272; }
 		.orientation-1 { box-shadow: inset -0.75vmin   0.375vmin 5vmin #727272; }
 		.orientation-2 { box-shadow: inset  0.375vmin  0.75vmin  5vmin #727272; }
@@ -246,7 +267,7 @@
 		var letters = dom.query('.letter', document);
 		var audio   = dom.find('audio');
 		var button  = dom.find('start-button');
-		var timer;
+		//var timer;
 
 		function play() {
 			console.log('Boggle: play');
@@ -260,23 +281,40 @@
 			var n = letters.length;
 			var dice;
 			var side;
-			var m, o, p, box;
+			var m, o, p, letter, box, classes;
 			
 			while (n--) {
 				box = letters[n];
-			
+
+				// Clear classes
+				box.setAttribute('class', 'letter');
+
 				// Letter
 				m = Math.floor(Math.random() * di.length);
 				dice = di.splice(m, 1)[0];
-				box.innerHTML = dice[Math.floor(Math.random() * 6)];
-			
+				letter = dice[Math.floor(Math.random() * 6)];
+				box.innerHTML = letter;
+
 				// Orientation
 				o = Math.floor(Math.random() * 4);
 				p = Math.random() * jitter - (jitter / 2);
 				box.style.transform = 'rotate(' + (o * 90 + p) + 'deg)';
-				dom.classes(box).add('orientation-' + o);
+				classes = dom.classes(box);
+				classes.add('orientation-' + o);
+
+				// Style
+				if (letter === 'w' || letter === 'm') {
+					classes.add('underlined-letter');
+				}
+				else if (letter === 'q') {
+					classes.add('q-letter');
+				}
 			}
-			
+
+			// 3 minute safety valve
+			//timer = setTimeout(stop, 180000);
+
+			// Body classes
 			var classes = dom.classes(dom.body);
 			classes.remove('stopped');
 			classes.add('playing');
@@ -285,33 +323,31 @@
 		function stop() {
 			console.log('Boggle: stop');
 
+			// Reset safety valve
+			//clearTimeout(timer);
+
+			// Body classes
 			var classes = dom.classes(dom.body);
 			classes.remove('playing');
 			classes.add('stopped');
-
-			clearTimeout(timer);
 		}
-
-		dom
-		.on('play', audio)
-		.map(get('type'))
-		.each(start);
-
-		//dom
-		//.on('timeupdate', audio)
-		//.map(get('type'))
-		//.each(console.log);
-
-		dom
-		.on('ended', audio)
-		.map(get('type'))
-		.each(stop);
 
 		dom
 		.on('click', button)
 		.each(play);
 
-		timer = setTimeout(stop, 180000);
+		dom
+		.on('play', audio)
+		.each(start);
+
+		dom
+		.on('ended', audio)
+		.each(stop);
+
+		//dom
+		//.on('timeupdate', audio)
+		//.map(get('type'))
+		//.each(console.log);
 	})(this);
 	</script>
 </body>
