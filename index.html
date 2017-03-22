@@ -39,7 +39,20 @@
 			width: 75vmin;
 			margin-left: auto;
 			margin-right: auto; 
-			border-spacing: 1.25vmin;
+			border-spacing: 0.5vmin;
+		}
+
+		table > tbody > tr > td {
+			background-clip: padding-box;
+			text-transform: uppercase;
+			border: 0px solid transparent;
+			box-shadow: inset 0.6vmin 5vmin 3vmin black;
+			text-align: center;
+			width: 16vmin;
+			height: 16vmin;
+			padding: 0.5vmin;
+			background-color: #565656;
+			border-radius: 0.8vmin;
 		}
 
 		.letter {
@@ -80,39 +93,39 @@
 <body>
 	<table>
 		<tr>
-			<td class="letter" id="letter-0"></td>
-			<td class="letter" id="letter-1"></td>
-			<td class="letter" id="letter-2"></td>
-			<td class="letter" id="letter-3"></td>
-			<td class="letter" id="letter-4"></td>
+			<td><div class="letter" id="letter-0"></div></td>
+			<td><div class="letter" id="letter-1"></div></td>
+			<td><div class="letter" id="letter-2"></div></td>
+			<td><div class="letter" id="letter-3"></div></td>
+			<td><div class="letter" id="letter-4"></div></td>
 		</tr>
 		<tr>
-			<td class="letter" id="letter-5"></td>
-			<td class="letter" id="letter-6"></td>
-			<td class="letter" id="letter-7"></td>
-			<td class="letter" id="letter-8"></td>
-			<td class="letter" id="letter-9"></td>
+			<td><div class="letter" id="letter-5"></div></td>
+			<td><div class="letter" id="letter-6"></div></td>
+			<td><div class="letter" id="letter-7"></div></td>
+			<td><div class="letter" id="letter-8"></div></td>
+			<td><div class="letter" id="letter-9"></div></td>
 		</tr>
 		<tr>
-			<td class="letter" id="letter-10"></td>
-			<td class="letter" id="letter-11"></td>
-			<td class="letter" id="letter-12"></td>
-			<td class="letter" id="letter-13"></td>
-			<td class="letter" id="letter-14"></td>
+			<td><div class="letter" id="letter-10"</div></td>
+			<td><div class="letter" id="letter-11"</div></td>
+			<td><div class="letter" id="letter-12"</div></td>
+			<td><div class="letter" id="letter-13"</div></td>
+			<td><div class="letter" id="letter-14"</div></td>
 		</tr>
 		<tr>
-			<td class="letter" id="letter-15"></td>
-			<td class="letter" id="letter-16"></td>
-			<td class="letter" id="letter-17"></td>
-			<td class="letter" id="letter-18"></td>
-			<td class="letter" id="letter-19"></td>
+			<td><div class="letter" id="letter-15"</div></td>
+			<td><div class="letter" id="letter-16"</div></td>
+			<td><div class="letter" id="letter-17"</div></td>
+			<td><div class="letter" id="letter-18"</div></td>
+			<td><div class="letter" id="letter-19"</div></td>
 		</tr>
 		<tr>
-			<td class="letter" id="letter-20"></td>
-			<td class="letter" id="letter-21"></td>
-			<td class="letter" id="letter-22"></td>
-			<td class="letter" id="letter-23"></td>
-			<td class="letter" id="letter-24"></td>
+			<td><div class="letter" id="letter-20"</div></td>
+			<td><div class="letter" id="letter-21"</div></td>
+			<td><div class="letter" id="letter-22"</div></td>
+			<td><div class="letter" id="letter-23"</div></td>
+			<td><div class="letter" id="letter-24"</div></td>
 		</tr>
 	</table>
 
@@ -126,10 +139,18 @@
 	<script src="dom/js/dom.js"></script>
 
 	<script>
-		var boxes = dom.query('.letter', document);
-		// Orientation jitter in degrees
-		var jitter = 4;
-		var di = [
+	(function(window) {
+		"use strict";
+
+		var Fn      = window.Fn;
+		var get     = Fn.get;
+		var toArray = Fn.toArray;
+
+		// Dice orientation jitter, in degrees
+		var jitter  = 4.8;
+
+		// Dice letter distributions
+		var distributions = [
 			"aaafrs",
 			"aaeeee",
 			"aafirs",
@@ -157,43 +178,57 @@
 			"ooottu"
 		];
 
-		var n = boxes.length;
-		var dice;
-		var side;
-		var m, o, box;
-
-		while (n--) {
-			box = boxes[n];
-
-			// Letter
-			m = Math.floor(Math.random() * di.length);
-			dice = di.splice(m, 1)[0];
-			box.innerHTML = dice[Math.floor(Math.random() * 6)];
-
-			// Orientation
-			o = Math.floor(Math.random() * 4);
-			p = Math.random() * jitter - (jitter / 2);
-			box.style.transform = 'rotate(' + (o * 90 + p) + 'deg)';
-			dom.classes(box).add('orientation-' + o);
-		}
-
+		var letters = dom.query('.letter', document);
 		var audio = dom.find('audio');
 
-		function end() {
+		function start() {
+			console.log('Boggle: start');
+
+			var di = toArray(distributions);
+			var n = letters.length;
+			var dice;
+			var side;
+			var m, o, p, box;
+			
+			while (n--) {
+				box = letters[n];
+			
+				// Letter
+				m = Math.floor(Math.random() * di.length);
+				dice = di.splice(m, 1)[0];
+				box.innerHTML = dice[Math.floor(Math.random() * 6)];
+			
+				// Orientation
+				o = Math.floor(Math.random() * 4);
+				p = Math.random() * jitter - (jitter / 2);
+				box.style.transform = 'rotate(' + (o * 90 + p) + 'deg)';
+				dom.classes(box).add('orientation-' + o);
+			}
+		}
+
+		function stop() {
+			console.log('Boggle: stop');
+
 			dom.classes(dom.body).add('timeout');
 		}
 
 		dom
+		.on('play', audio)
+		.map(get('type'))
+		.each(start);
+
+		dom
 		.on('timeupdate', audio)
-		.map(Fn.get('type'))
+		.map(get('type'))
 		.each(console.log);
 
 		dom
 		.on('ended', audio)
-		.map(Fn.get('type'))
-		.each(end);
+		.map(get('type'))
+		.each(stop);
 
-		setTimeout(end, 180000);
+		setTimeout(stop, 180000);
+	})(this);
 	</script>
 </body>
 </html>
